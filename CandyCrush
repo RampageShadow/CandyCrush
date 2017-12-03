@@ -1,0 +1,188 @@
+
+      //Este programa es un juego como "Candy Crush"
+
+import java.util.*;
+import java.awt.*;
+
+public class CandyCrush {
+
+	public static void main(String args[]) {
+
+		Scanner teclado = new Scanner(System.in);
+
+		int inicio = 1;
+
+		while (inicio == 1) {
+			inicio = 0;
+			System.out.println("Bienvenido a Candy Crush");
+			System.out.println(" ");
+			System.out.println("Elija tipo de tablero");
+			System.out.println("1.Fácil");
+			System.out.println("2.Intermedio");
+			System.out.println("3.Difícil");
+			System.out.println("4.Tablero fijo");
+			System.out.println("0.Salir \n");
+		}
+
+		int opcion = teclado.nextInt();
+		while (opcion < 0 || opcion > 4) {
+			System.out.println("Introduzca un número válido, por favor ");
+			opcion = teclado.nextInt();
+		}
+		int dificultad;
+		int puntuacion = 0;
+		int movimientos = 10;
+
+		// El juego dispone de 10 movimientos
+
+		// dificultad equivale al número de tipos de caramelos que habrá
+		switch (opcion) {
+		case 1:
+			System.out.println("Dificultad fácil ");
+			dificultad = 3;
+			break;
+		case 2:
+			System.out.println("Dificultad media ");
+			dificultad = 4;
+			break;
+		case 3:
+			System.out.println("Dificultad difícil ");
+			dificultad = 5;
+			break;
+		case 4:
+			System.out.println("En desarrollo ");
+			// Que no sea random
+			dificultad = 4;
+			break;
+		default:
+			System.out.println("Gracias por jugar");
+			dificultad = 0;
+			// El tablero no debe imprimirse
+			break;
+		}
+		tablero(dificultad);
+		System.out.println("En desarrollo, para salir ctrl c ");
+		while (movimientos > 0) {
+			int i1, i2, j1, j2;
+			i1=teclado.nextInt();
+			i2=teclado.nextInt();
+			j1=teclado.nextInt();
+			j2=teclado.nextInt();
+			movimiento(i1, i2, j1, j2);
+
+		} // Mostrar puntuación
+		System.out.println(puntuacion);
+		// Funcion movimientos
+
+		for (int asteriscos = 0; asteriscos < 3; asteriscos++) {
+			System.out.println(" ");
+		}
+
+		System.out.println("Su puntuación es : " + puntuacion);
+		inicio = 1;
+		// FIN DEL PROGRAMA
+
+	}
+
+	public static void tablero(int dificultad){
+		//Tablero
+		//Vamos a usar matrices
+		//'i' equivale al número de filas; ' j' equivale al número de columnas; 's' genera el símbolo equivalente al caramelo
+		
+		int[][]matriz=new int[9][9];
+		//A través de un array asignamos una posición a cada punto
+		
+
+		int turno=0;
+		if(turno==0){
+			turno++;
+			for(int i=0;i<9;i++){
+				for(int j=0;j<9;j++){
+					matriz[i][j]=(int)Math.floor(Math.random()*dificultad);
+					System.out.print(matriz[i][j]+" ");
+				}
+				System.out.println(" ");
+			}
+		}
+		for(int i=0;i<9;i++){
+			for(int j=0;j<9;j++){
+				if(i==0||i==8||j==0||j==8){
+					//Error
+				}else{
+					int pos1=matriz[i][j];
+					int pos2=matriz[i-1][j];
+					int pos3=matriz[i+1][j];
+					if(Posible(pos1,pos2) || Posible(pos1,pos3)){
+						//borrar
+					}
+				}
+			}
+		}
+		
+	}
+
+	public static void movimiento(int i1, int j1, int i2, int j2) {
+		// Intercambiar signos
+		Scanner teclado = new Scanner(System.in);
+		System.out.println("Introduzca las coordenadas de los números ");
+		// Los números deben de estar juntos
+		// Si está en borde de tablero no se mueve
+		// Validación de datos de entrada
+		System.out.println("Primer número, primera posición ");
+		i1 = teclado.nextInt();
+		while (i1 <= 0 || i1 > 9) {
+			System.out.println("Casilla no existente. Por favor, introduzca el número de nuevo ");
+			i1 = teclado.nextInt();
+		}
+
+		System.out.println("Primer número, segunda posición ");
+		j1 = teclado.nextInt();
+		while (j1 <= 0 || j1 > 9) {
+			System.out.println("Casilla no existente. Por favor, introduzca el número de nuevo ");
+			j1 = teclado.nextInt();
+		}
+
+		System.out.println("Segundo número, primera posición ");
+		i2 = teclado.nextInt();
+		while ((i2 <= 0 || i2 > 9) || (i2 < i1 - 1 || i2 > i1 + 1)) {
+			System.out.println("Casilla no existente. Por favor, introduzca el número de nuevo ");
+			i2 = teclado.nextInt();
+		}
+		System.out.println("Segundo número, segunda posición ");
+		j2 = teclado.nextInt();
+		while ((j2 <= 0 || j2 > 9) || (j2 < j1 - 1 || j2 > j1 + 1)) {
+			System.out.println("Casilla no existente. Por favor, introduzca el número de nuevo ");
+			i1 = teclado.nextInt();
+		}
+
+		if (i1 == 0 && i2 == 0 && j1 == 0 && j2 == 0) {
+			System.out.println("Ha elegido terminar el juego directamente. ");
+			// movimientos=-1;
+
+		} else {
+			int copia = matriz[i1][j1];
+			matriz[i1][j1] = matriz[i2][j2];
+			matriz[i2][j2] = copia;
+			}
+	
+	}
+
+	// Cambiarlo a matriz
+	public static boolean Posible(int a, int b) {
+		if (a == b) {
+			return true;
+		}
+		return false;
+	}
+	
+}
+
+
+
+		// Añadir puntos
+		// intercambiar signos
+		// Si al intercambiar el contenido de las casillas no se elimina ningún
+		// bloque, la jugada no tendrá efecto
+
+		/*
+		 * if(Posible(Point a, Point b)){ } */                                                                                                                              33,1-8        Top
